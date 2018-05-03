@@ -1,8 +1,11 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
+	"protocolfile"
+	"protocolfile/proto3"
 
 	"golang.org/x/net/websocket"
 )
@@ -11,28 +14,28 @@ var origin = "http://127.0.0.1:8080/"
 var url = "ws://127.0.0.1:8080/GolangLTD"
 
 func main() {
-	i := 0
+
 	//for {
 	ws, err := websocket.Dial(url, "", origin)
 	if err != nil {
 		log.Fatal(err)
 	}
-	message := []byte("hello, world!你好")
-	_, err = ws.Write(message)
-	if err != nil {
-		log.Fatal(err)
+	Pc_PlayeNInfo := Proto3_Data.Net_Heart_Beating{
+		Protocol: Proto_Data.Network_Data_Proto, // 主协议
 	}
 
-	fmt.Printf("Send: %s\n", message, "=====:", i)
-	i++
+	b, err1 := json.Marshal(Pc_PlayeNInfo)
+	if err1 != nil {
 
-	var msg = make([]byte, 512)
-	m, err := ws.Read(msg)
-	if err != nil {
-		log.Fatal(err)
 	}
-	fmt.Printf("Receive: %s\n", msg[:m])
-	//}
+	data := ""
+	data = "data" + "=" + string(b[0:len(b)])
+	fmt.Println(data)
+	// 发送数据给玩家 立马发送数据给客户端
+	datamap := make(map[string]interface{})
+	datamap["data"] = data
+	websocket.JSON.Send(ws, datamap)
 
-	ws.Close() //关闭连接
+	// 发送数据给服务器
+	//	PlayerSendMessage(Pc_PlayeNInfo, ws)
 }

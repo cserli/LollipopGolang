@@ -1,18 +1,15 @@
 package main
 
 import (
-	//"Zi_ziRuiLiDeDuiZhanServerbak/loglogic"
+	"encoding/base64"
 	"encoding/json"
+	"glog-master"
 	"image"
+	"image/png"
+	"os"
 	"strings"
 
 	"code.google.com/p/go.net/websocket"
-	//"image/jpeg"
-	//"Zi_ziRuiLiDeDuiZhanServerbak/db_mysql"
-	"encoding/base64"
-	"glog-master"
-	"image/png"
-	"os"
 )
 
 //发送给客户端的数据的函数

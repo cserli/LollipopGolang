@@ -10,8 +10,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"protocolfile"
 	"runtime"
-	"zLollipopGolang/protocolfile"
 
 	"code.google.com/p/go.net/websocket"
 )
@@ -84,12 +84,12 @@ func BuildConnection(ws *websocket.Conn) {
 
 	data := ws.Request().URL.Query().Get("data")
 	glog.Info(data)
-	//	if data == "" {
-	//		// 直接返回数据
-	//		glog.Info("data is Nil")
-	//		glog.Flush()
-	//		return
-	//	}
+	if data == "" {
+		// 直接返回数据
+		glog.Info("data is Nil")
+		glog.Flush()
+		return
+	}
 	// 指针和地址都可以看做是数据块在内存存储的地址
 	onlineUser := &OnlineUser{
 		Connection: ws, // 链接的数据信息== 广播的数据的信息，广播给用户的数据；所有的链接的数据的信息

@@ -4,7 +4,7 @@ import (
 	//	"glog-master"
 	///	"strconv"
 	//	"zLollipopGolang/protocolfile"
-	"zLollipopGolang/protocolfile/proto3"
+	"protocolfile/proto3"
 )
 
 // 消息处理函数,通过协议去处理数据； 网络相关的子协议处理； 主要是登陆和注册等数据。
