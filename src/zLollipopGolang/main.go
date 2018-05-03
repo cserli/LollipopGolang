@@ -1,16 +1,12 @@
 package main
 
 import (
-	"zLollipopGolang/db_mysql"
-	//  "time"
-	//	"zLollipopGolang/db_redis"
+
 	"cache2go"
 	"crypto/md5"
 	"zLollipopGolang/globalData"
 	"zLollipopGolang/loglogic"
 	"zLollipopGolang/protocolfile"
-	"zLollipopGolang/protocolfile/Proto2"
-	// "encoding/hex"
 	"concurrent-map-master"
 	"encoding/json"
 	"flag"

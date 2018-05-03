@@ -1,14 +1,14 @@
 package main
 
 import (
-	"zLollipopGolang/db_mysql"
+	//"zLollipopGolang/db_mysql"
 	//	"zLollipopGolang/db_redis"
 	"zLollipopGolang/globalData"
 	//"zLollipopGolang/loglogic"
 	"encoding/json"
 	"glog-master"
 	"zLollipopGolang/protocolfile"
-	"zLollipopGolang/protocolfile/Proto2"
+	//	"zLollipopGolang/protocolfile/Proto2"
 	//	"time"
 )
 

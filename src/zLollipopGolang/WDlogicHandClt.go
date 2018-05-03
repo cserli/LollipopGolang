@@ -3,9 +3,9 @@ package main
 import (
 	"glog-master"
 	"strconv"
-	"zLollipopGolang/db_mysql"
+	//	"zLollipopGolang/db_mysql"
 	"zLollipopGolang/protocolfile"
-	_ "zLollipopGolang/protocolfile/Proto2"
+	//	_ "zLollipopGolang/protocolfile/Proto2"
 	"zLollipopGolang/protocolfile/proto3"
 )
 

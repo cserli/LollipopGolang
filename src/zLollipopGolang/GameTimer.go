@@ -7,7 +7,7 @@ import (
 	"time"
 	"zLollipopGolang/loglogic"
 	"zLollipopGolang/protocolfile"
-	"zLollipopGolang/protocolfile/Proto2"
+	//	"zLollipopGolang/protocolfile/Proto2"
 )
 
 // 游戏结束发送给所有的玩家

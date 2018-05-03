@@ -10,7 +10,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
-	"zLollipopGolang/db_mysql"
+	//	"zLollipopGolang/db_mysql"
 	"zLollipopGolang/db_redis"
 	"zLollipopGolang/globalData"
 	"zLollipopGolang/loglogic"

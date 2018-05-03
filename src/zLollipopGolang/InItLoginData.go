@@ -13,7 +13,7 @@ import (
 	"unsafe"
 	"zLollipopGolang/globalData"
 	"zLollipopGolang/protocolfile"
-	"zLollipopGolang/protocolfile/Proto2"
+	//	"zLollipopGolang/protocolfile/Proto2"
 
 	"code.google.com/p/go.net/websocket"
 )

@@ -4,7 +4,7 @@ import (
 	"glog-master"
 	"zLollipopGolang/globalData"
 	"zLollipopGolang/protocolfile"
-	"zLollipopGolang/protocolfile/Proto2"
+	//	"zLollipopGolang/protocolfile/Proto2"
 )
 
 // 处理服务器间的数据的处理

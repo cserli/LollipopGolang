@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strconv"
 	"time"
-	"zLollipopGolang/db_mysql"
+	//	"zLollipopGolang/db_mysql"
 	"zLollipopGolang/db_redis"
 	"zLollipopGolang/globalData"
 	"zLollipopGolang/loglogic"
