@@ -2,7 +2,6 @@ package main
 
 import (
 	"cache2go"
-	"concurrent-map-master"
 	"go-concurrentMap-master"
 
 	"code.google.com/p/go.net/websocket"
@@ -26,17 +25,4 @@ type OnlineUser struct {
 
 // 定义全局的变量的数据
 var cache *cache2go.CacheTable  // 硬件存储
-var Gmap cmap.ConcurrentMap     // 并发安全的map
 var M *concurrent.ConcurrentMap // 并发安全的map
-var ServerURl string = ""
-
-// 游戏中需要的结构
-var MapG_LogoTime map[string]string
-var MapG_EWMTime map[string]string
-
-/////////////////////
-//==============================================================================
-var RES_Path = "120.24.219.60/res/"
-var RES_Path_Url = "www.websocket.club:"
-
-var GameType = "1"
