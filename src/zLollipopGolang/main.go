@@ -1,12 +1,7 @@
 package main
 
 import (
-
 	"cache2go"
-	"crypto/md5"
-	"zLollipopGolang/globalData"
-	"zLollipopGolang/loglogic"
-	"zLollipopGolang/protocolfile"
 	"concurrent-map-master"
 	"encoding/json"
 	"flag"
@@ -17,7 +12,6 @@ import (
 	"net/http"
 	"os"
 	"runtime"
-	"strconv"
 
 	"code.google.com/p/go.net/websocket"
 )
@@ -34,10 +28,8 @@ func main() {
 
 	log.Print(os.Args[1:])
 	log.Printf(flag.Arg(1))
-	// 正式的
-	Log_Eio.FilePort = os.Args[1]
 	// 第三方日志系统
-	glog.Info("Entry Main"+"Server "+"! Port:", Log_Eio.FilePort)
+	glog.Info("Entry Main"+"Server "+"! Port:", os.Args[1])
 	glog.Info("System NumCPU: ", runtime.NumCPU())
 	// 指定程序使用多核
 	runtime.GOMAXPROCS(runtime.NumCPU() * 2)
@@ -45,7 +37,7 @@ func main() {
 	///////////////////////////////////////////////
 	// 注册事件给服务器，建立成功。路由分发处理；服务器的路由功能。
 	http.Handle("/GolangLTD", websocket.Handler(BuildConnection))
-	if err := http.ListenAndServe(":"+Log_Eio.FilePort, nil); err != nil {
+	if err := http.ListenAndServe(":"+os.Args[1], nil); err != nil {
 		glog.Info("Entry nil", err.Error())
 		glog.Flush()
 		return
@@ -64,53 +56,22 @@ func init() {
 		}
 	}()
 	// 初始化数据
-	runningGoldMinerRoom = new(GoldMinerRoom)
 	runningGoldMinerRoom.OnlineUsers = make(map[string]*OnlineUser)
-	// 初始化服务器间数据
-	runningServerRoom = new(ServerRoom)
-	runningServerRoom.OnlineServers = make(map[string]*OnlineServer)
-
-	dbif.G_mapGameListInfo = make(map[string]*Global_Define.StGameListInfo)
 	// 获取指定系统参数
-	Log_Eio.SysCanShu = runtime.NumCPU()
+	var SysCanShu = runtime.NumCPU()
 	// 初始化 内存数据库
-	if Log_Eio.SysCanShu == 2 {
-		RES_Path = "120./res/"
-		origin = "ws://.club:1/xxx?"
-		urlre = "ws://.club:1/xxx?"
-		Log_Eio.ServerURl = "db:"
-		GameType = "2"
+	var RES_Path = "120./res/"
+	var origin = "ws://.club:1/xxx?"
+	var urlre = "ws://.club:1/xxx?"
+	var ServerURl = "db:"
 
-	} else if Log_Eio.SysCanShu == 1 {
-
-		RES_Path = "112./res/"
-		origin = "ws://w/xxx?"
-		urlre = "ws://1/xxx?"
-		Log_Eio.ServerURl = "www:"
-		GameType = "1"
-
-	} else if Log_Eio.SysCanShu == 4 {
-		RES_Path = "120./res/"
-		origin = "ws://r1/xxx?"
-		urlre = "ws://r01/xxx?"
-		Log_Eio.ServerURl = "run..b:"
-		GameType = "3"
-
-	}
-
-	// 初始化服务器--直接链接到登陆服务器
-	go ZiGameConnetHallServer()
-	if !dbif.InitData() {
-		glog.Info("-----------------dbif.InitData failed------------------------")
-	}
 	// 初始化cache
-	cache = cache2go.Cache("myCache")
+	var cache = cache2go.Cache("myCache")
 	// 初始化map
 	Gmap = cmap.New()
 	M = concurrent.NewConcurrentMap()
-
-	// 正式环境屏蔽日志
-	if Log_Eio.SysCanShu != 4 {
+	// 屏蔽日志
+	if SysCanShu != 4 {
 		//f.exe -log_dir="./" -v=3
 		flag.Set("alsologtostderr", "true") // 日志写入文件的同时，输出到stderr
 		flag.Set("log_dir", "./log")        // 日志文件保存目录
@@ -118,24 +79,8 @@ func init() {
 		flag.Parse()
 	}
 
-	// 初始化map
-	G_StXianChangInfotmp = make(map[string]*Global_Define.StXianChangInfo) // 推送数据
-	G_StWeiXinDatatmp = make(map[string]*Global_Define.StWeiXinUserInfo)   // 微信用户数据
-	Global_Define.G_StWeiXinDatatmpbak = make(map[string]*Global_Define.StWeiXinUserInfobak)
-	Global_Define.G_StWeiXinDatatmp = make(map[string]*Global_Define.StWeiXinUserInfo)
-	MapG_LogoTime = make(map[string]string)                                           // ss
-	MapG_EWMTime = make(map[string]string)                                            // ss
-	G_GameInfoST = make(map[string]*Global_Define.StGameListInfo)                     // StGameListInfo数据
-	G_ActivitiesInfoST = make(map[string]*Global_Define.StActivitiesInfocsv)          // StActivitiesInfo数据
-	G_GameConfigInfoST = make(map[string]*Global_Define.StGameConfigInfo)             // StGameConfigInfo数据
-	Global_Define.G_StCard2InfoBaseST = make(map[string]*Global_Define.Card2InfoBase) // 卡牌活动结构
-
-	go GamePanDuanTimer()
-	go GameCDClearTimer()
-	go Timer_OutPlayer()
-
 	// 获取配置文件
-	ReadCsv_ConfigFile()
+	//ReadCsv_ConfigFile()
 	return
 }
 
@@ -195,18 +140,13 @@ func (this *OnlineUser) SyncMessageFun(content string) {
 	var r Requestbody
 	r.req = content
 	if ProtocolData, err := r.Json2map(); err == nil {
-
-		// md5 加密
-		h := md5.New()
-		h.Write([]byte(strconv.Itoa(Global_Define.RandData(1000)))) // 需要加密的字符串为 sharejs.com
-		// switch 处理消息数据
 		this.HandleCltProtocol(ProtocolData["Protocol"], ProtocolData["Protocol2"], ProtocolData)
 	} else {
 		glog.Info("SyncMessageFun :", err.Error())
 	}
 
 	// 清除并发连接
-	// runtime.Gosched()
+	runtime.Gosched()
 	runtime.Goexit()
 
 	return
@@ -252,6 +192,6 @@ func (this *OnlineUser) HandleCltProtocol(protocol interface{}, protocol2 interf
 			this.HandleCltProtocol2WD(protocol2, ProtocolData)
 			break
 		}
-	
+	}
 	return
 }
