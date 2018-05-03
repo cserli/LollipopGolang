@@ -1,8 +1,7 @@
 package main
 
 import (
-	"cache2go"
-	"concurrent-map-master"
+	//	"cache2go"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -12,6 +11,7 @@ import (
 	"net/http"
 	"os"
 	"runtime"
+	"zLollipopGolang/protocolfile"
 
 	"code.google.com/p/go.net/websocket"
 )
@@ -59,16 +59,10 @@ func init() {
 	runningGoldMinerRoom.OnlineUsers = make(map[string]*OnlineUser)
 	// 获取指定系统参数
 	var SysCanShu = runtime.NumCPU()
-	// 初始化 内存数据库
-	var RES_Path = "120./res/"
-	var origin = "ws://.club:1/xxx?"
-	var urlre = "ws://.club:1/xxx?"
-	var ServerURl = "db:"
 
 	// 初始化cache
-	var cache = cache2go.Cache("myCache")
+	//	var cache = cache2go.Cache("myCache")
 	// 初始化map
-	Gmap = cmap.New()
 	M = concurrent.NewConcurrentMap()
 	// 屏蔽日志
 	if SysCanShu != 4 {
@@ -167,6 +161,15 @@ func (r *Requestbody) Json2map() (s map[string]interface{}, err error) {
 	return result, nil
 }
 
+//--------------------------------------------------------------------------------
+// 【错误提示】 G_Error_All_Proto
+type G_Error_All struct {
+	Protocol  uint32 // 主协议
+	Protocol2 uint32 // 子协议
+	ErrCode   string // 错误码
+	ErrMsg    string // 错误说明
+}
+
 // 消息处理函数,通过协议去处理数据;主协议处理
 func (this *OnlineUser) HandleCltProtocol(protocol interface{}, protocol2 interface{}, ProtocolData map[string]interface{}) {
 
@@ -174,11 +177,11 @@ func (this *OnlineUser) HandleCltProtocol(protocol interface{}, protocol2 interf
 		if err := recover(); err != nil {
 			strerr := fmt.Sprintf("%s", err)
 			//发消息给客户端
-			ErrorST := Proto2_Data.G_Error_All{
-				Protocol:  Proto_Data.G_Error_Proto,      // 主协议
-				Protocol2: Proto2_Data.G_Error_All_Proto, // 子协议
-				ErrCode:   "80006",
-				ErrMsg:    "亲，您发的数据的格式不对！" + strerr,
+			ErrorST := G_Error_All{
+				Protocol: Proto_Data.G_Error_Proto, // 主协议
+				//				Protocol2: Proto2_Data.G_Error_All_Proto, // 子协议
+				ErrCode: "80006",
+				ErrMsg:  "亲，您发的数据的格式不对！" + strerr,
 			}
 			// 发送给玩家数据
 			this.PlayerSendMessage(ErrorST)
