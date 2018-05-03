@@ -37,7 +37,8 @@ func main() {
 	///////////////////////////////////////////////
 	// 注册事件给服务器，建立成功。路由分发处理；服务器的路由功能。
 	http.Handle("/GolangLTD", websocket.Handler(BuildConnection))
-	if err := http.ListenAndServe(":"+os.Args[1], nil); err != nil {
+	//	if err := http.ListenAndServe(":"+os.Args[1], nil); err != nil {
+	if err := http.ListenAndServe(":8080", nil); err != nil {
 		glog.Info("Entry nil", err.Error())
 		glog.Flush()
 		return
@@ -83,12 +84,12 @@ func BuildConnection(ws *websocket.Conn) {
 
 	data := ws.Request().URL.Query().Get("data")
 	glog.Info(data)
-	if data == "" {
-		// 直接返回数据
-		glog.Info("data is Nil")
-		glog.Flush()
-		return
-	}
+	//	if data == "" {
+	//		// 直接返回数据
+	//		glog.Info("data is Nil")
+	//		glog.Flush()
+	//		return
+	//	}
 	// 指针和地址都可以看做是数据块在内存存储的地址
 	onlineUser := &OnlineUser{
 		Connection: ws, // 链接的数据信息== 广播的数据的信息，广播给用户的数据；所有的链接的数据的信息
